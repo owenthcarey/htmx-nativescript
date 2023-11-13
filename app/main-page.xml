@@ -3,7 +3,7 @@
 
     <StackLayout class="p-20">
         <Label text="Tap the button" class="h1 text-center" />
-        <Button text="TAP" tap="{{ onTap }}" class="-primary" hx-get="http://localhost:3000/xml" />
+        <Button text="TAP" tap="{{ onTap }}" class="-primary" hx-get="http://100.115.92.198:3000/xml" />
         <Label text="{{ message }}" class="h2 text-center" textWrap="true" />
     </StackLayout>
 </Page>
