@@ -2,6 +2,15 @@ import { Property, ViewBase } from '@nativescript/core';
 import { Http } from '@nativescript/core';
 import { createViewModel } from './main-view-model';
 
+export function onNavigatingTo(args) {
+  const page = args.object
+  page.bindingContext = createViewModel()
+}
+
+// ----------------------------------------
+// HTMX
+// ----------------------------------------
+
 async function makeHttpRequest(method, url) {
   try {
     switch (method) {
@@ -27,6 +36,13 @@ async function makeHttpRequest(method, url) {
   }
 }
 
+// Function to update view based on response
+function updateViewWithResponse(view, responseXml) {
+  // Parse the XML response
+  // Remove the existing view (button in this case)
+  // Add new views based on parsed XML
+}
+
 // ----------------------------------------
 // HTMX HTTP-request properties
 // ----------------------------------------
@@ -38,6 +54,9 @@ const hxGetProperty = new Property({
     console.log('GET URL:', newValue);
     const response = await makeHttpRequest('GET', newValue);
     console.log('HTTP Response:', response);
+    if (view.hxSwap === 'outerHTML') {
+      updateViewWithResponse(view, response); // A function to handle view update
+    }
   },
 })
 hxGetProperty.register(ViewBase);
@@ -113,11 +132,7 @@ const hxSwapProperty = new Property({
   valueChanged: (view, oldValue, newValue) => {
     // Implement the logic for swapping content
     console.log(newValue);
+    view.hxSwap = newValue; // Store the swap preference in the view
   },
 });
 hxSwapProperty.register(ViewBase);
-
-export function onNavigatingTo(args) {
-  const page = args.object
-  page.bindingContext = createViewModel()
-}
