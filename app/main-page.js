@@ -1,13 +1,12 @@
 import { Property, ViewBase } from '@nativescript/core';
-import { HttpClient } from '@nativescript/core/http';
+import { Http } from '@nativescript/core';
 import { createViewModel } from './main-view-model';
 
 async function makeHttpRequest(method, url) {
-  const httpClient = new HttpClient();
   try {
     switch (method) {
       case 'GET':
-        return await httpClient.getJSON(url);
+        return await Http.getString(url);
       case 'POST':
         // Add logic for POST request
         break;
@@ -34,9 +33,11 @@ async function makeHttpRequest(method, url) {
 
 const hxGetProperty = new Property({
   name: 'hx-get',
-  valueChanged: (view, oldValue, newValue) => {
+  valueChanged: async (view, oldValue, newValue) => {
     // Implement the logic for the GET HTTP request
     console.log('GET URL:', newValue);
+    const response = await makeHttpRequest('GET', newValue);
+    console.log('HTTP Response:', response);
   },
 })
 hxGetProperty.register(ViewBase);
